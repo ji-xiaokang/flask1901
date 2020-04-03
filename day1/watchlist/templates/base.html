@@ -13,6 +13,10 @@
         <img class="img" src="{{url_for('static',filename='images/ji.jpg')}}" alt="图片">
         {{user.name}}'s WatchList
     </h2>
+    <!--提示信息-->
+    {% for message in get_flashed_messages() %}
+        <div class="alert">{{message}}</div>
+    {% endfor %}
     <nav>
         <ul>
             <li>
