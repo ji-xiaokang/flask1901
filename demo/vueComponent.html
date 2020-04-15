@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://cdn.bootcss.com/twitter-bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">    
+    <title>HTML,CSS,JavaScripts,jquery,Bootstrap来实现的购物车</title>
+    <style>
+        .container{
+            width:40%;
+            margin: 100px auto;
+
+        }
+        .removed{
+            color:grey;
+        }
+        .removed label{
+            text-decoration: line-through;
+        }
+        ul{
+            border:1px solid black;
+            margin-top: 30px;
+        }
+        ul li{
+            list-style: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container" id="app">
+        <h2>{{ title }}</h2>
+        <!-- 添加按钮 -->
+        <div class="input-group">
+            <input v-model="newItem" type="text" class="form-control" placeholder="添加想要购买的商品" >
+            <span class="input-group-btn">
+                <button v-on:click="addItem" type="button" class=" btn btn-default">添加到购物车</button>
+            </span>
+        </div>
+        <items-components></items-components>
+
+
+<!-- 无序列表 -->
+         <ul>
+            <li v-for="item in items" v-bind:class="{'removed':item.checked}">
+                <div class="checkbox">
+                    <label for="">
+                        <input v-model="item.checked" type="checkbox" >{{ item.text }}  <!--双向数据绑定-->
+                    </label>
+                </div>
+            </li>
+        </ul> 
+        <div class="footer">
+            <hr>
+            <span>改变标题</span>
+            <input v-model='title'>
+        </div>
+        <hr>
+        <div v-square='item'></div>
+    </div>
+    
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script> 
+    Vue.directive('square',function(el,binding){
+        el.innerHTML = Math.pow(binding.value,2)
+    })
+    var data={
+        items:[
+            {text:'苹果',checked:true},
+            {text:'手机',checked:true},
+            {text:'电脑',checked:true}
+            ],
+        title:'我的购物车清单',
+        newItem:'',
+        item : 999999
+    };
+    // 创建列表组件
+    var ItemsComponents = Vue.extend({
+        data:function(){
+            return data;
+        },
+        template:
+            '<ul>'+
+            '<li v-for="item in items" v-bind:class="{removed:item.checked}">'+
+                '<div class="checkbox">'+
+                   ' <label for="">'+
+                        '<input v-model="item.checked" type="checkbox" >{{ item.text }}  <!--双向数据绑定-->'+
+                   ' </label>'+
+                '</div>'+
+            '</li>'+
+            '</ul>'
+    });
+    // 创建改变标题组件
+    var ChangeTitleComponents = Vue.extend({
+
+    })
+    // 创建添加组件
+    var AddItemComponents = Vue.extend({
+
+    })
+    // 注册组件
+    // Vue.components('items-components',ItemsComponents);
+    // Vue.components('change-title-components',ChangeTitleComponents);
+    // Vue.components('add-item-components',AddItemComponents);
+
+    new Vue({
+        el:'#app',
+        data:data,
+        methods:{
+            addItem:function(){
+                var text;
+                text = this.newItem.trim()
+                if (text){
+                    this.items.push({
+                        text:text,
+                        checked:false,
+                    })
+                };
+                this.newItem = ''
+            }
+        }
+    })
+</script>
+</html>
