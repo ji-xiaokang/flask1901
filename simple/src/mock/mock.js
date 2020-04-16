@@ -1,0 +1,100 @@
+import Mock from 'mockjs'
+
+Mock.mock(/getNewsList/,{
+    'list|7':[{
+            'url':'@url',
+            'title':'@ctitle(5,17)'
+        }]
+})
+Mock.mock(/getproductlist/,{
+    'list':[{
+ 
+        pc:{
+            title:"PC产品",
+            list:[
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                
+            ]
+        },
+        app:{
+            title:"手机应用类",
+            last:true,
+            list:[
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+                {
+                    title:'@ctitle(5,10)',
+                    url:"@url"
+                },
+            ]
+        }
+        
+    }]
+})
+Mock.mock(/getboardlist/,{
+    'list':[
+            {
+            'title':'@ctitle(5,6)',
+            'p':'@ctitle(7,10)'
+            },
+            {
+            'title':'@ctitle(5,6)',
+            'p':'@ctitle(7,10)'
+            },
+            {
+            'title':'@ctitle(5,6)',
+            'p':'@ctitle(7,10)'
+            },
+            {
+            'title':'@ctitle(5,6)',
+            'p':'@ctitle(7,10)'
+            }
+    ]
+})
+
+export default Mock

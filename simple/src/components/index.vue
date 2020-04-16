@@ -4,7 +4,7 @@
             <div class="index-left-block all-products">
                 <h2>全部产品</h2>
                 <!-- 方法二： -->
-                <template v-for="product in productlist">
+                <template v-for="product in productlist[0]">
                     <h3>{{ product.title }}</h3>
                     <ul>
                         <!-- <li v-for="item in productlist.pc.list">
@@ -29,43 +29,20 @@
             <div class="index-left-block lastest-news">
                 <h2>最新消息</h2>
                 <ul>
-                    <li>aaaa</li>
+                    <li v-for="news in newsList">
+                        <a v-bind:href="news.url">{{ news.title }}</a>
+                    </li>
                 </ul>
             </div>
         </div>
         <div class="index-right">
-            <div style="width:700px;height:300px;background:red;margin:0 auto;text-align:center;line-height:300px;font-size:50px">slider</div>
+            <slider-component style="margin-top:15px"></slider-component>
             <div class="index-board-list">
-                <div class="index-board-item">
+                <div class="index-board-item" v-for="board in boardlist">
                     <div class="index-board-item-inner">
-                        
-                        <h2>救救孩子吧</h2>
-                        <p>赶紧开学吧</p>
-                        <div class="index-board-button">立即开学</div>
-                    </div>
-                </div>
-                <div class="index-board-item">
-                    <div class="index-board-item-inner">
-                        
-                        <h2>救救孩子吧</h2>
-                        <p>赶紧开学吧</p>
-                        <div class="index-board-button">立即开学</div>
-                    </div>
-                </div>
-                <div class="index-board-item">
-                    <div class="index-board-item-inner">
-                        
-                        <h2>救救孩子吧</h2>
-                        <p>赶紧开学吧</p>
-                        <div class="index-board-button">立即开学</div>
-                    </div>
-                </div>
-                <div class="index-board-item">
-                    <div class="index-board-item-inner">
-                        
-                        <h2>救救孩子吧</h2>
-                        <p>赶紧开学吧</p>
-                        <div class="index-board-button">立即开学</div>
+                        <h2>{{ board.title }}</h2>
+                        <p>{{ board.p }}</p>
+                        <div class="index-board-button">点我跳转</div>
                     </div>
                 </div>
             </div>
@@ -74,57 +51,45 @@
 </template>
 
 <script>
+import axios from 'axios'
+import SliderComponent from './sliderComoneent'
+
 export default {
+    components:{
+        SliderComponent
+    },
+    mounted() {
+        // 最新消息
+        axios.get("api/getNewsList")
+        .then((response) => {
+            this.newsList = response.data.list
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        // 全部产品
+        axios.get("api/getproductlist")
+        .then((response) => {
+            this.productlist = response.data.list
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+        // 右边下部分
+        axios.get("api/getboardlist")
+        .then((response) => {
+            this.boardlist = response.data.list
+        })
+        .catch((error) => {
+            console.log(error)
+        })
+    },
     data() {
         return {
-            productlist:{
-                pc:{
-                    title:"PC产品",
-                    list:[
-                        {
-                            title:'数据统计',
-                            url:"http://starcraft.com"
-                        },
-                        {
-                            title:'数据预测',
-                            url:"http://warcaft.com"
-                        },
-                        {
-                            title:'流量分析',
-                            url:"http://overwatch.com",
-                            hot:true
-                        },
-                        {
-                            title:'广告发布',
-                            url:"http://hearstone.com"
-                        },
-                        
-                    ]
-                },
-                app:{
-                    title:"手机应用类",
-                    last:true,
-                    list:[
-                        {
-                            title:'91助手',
-                            url:"http://weixin.com"
-                        },
-                        {
-                            title:'产品助手',
-                            url:"http://starecaft.com",
-                            hot:true
-                        },
-                        {
-                            title:'智能地图',
-                            url:"http://maps.com"
-                        },
-                        {
-                            title:'语音助手',
-                            url:"http://phone.com"
-                        }
-                    ]
-                }
-            }
+            newsList:[],
+            productlist:[],
+            boardlist:[]
+            
         }
     },
 }
@@ -172,6 +137,7 @@ export default {
         font-size:13px;
     }
     .index-board-list{
+        padding-top: 20px;
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
