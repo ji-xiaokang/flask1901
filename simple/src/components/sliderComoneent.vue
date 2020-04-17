@@ -1,18 +1,20 @@
 <template>
     <div class="slider-wrapper" @mouseover="clearInv" @mouseout="runInv">
-        <div v-show="index === nowIndex" v-for="(imgUrl,index) in sliderImgList" :key="index" class="slider-item" v-bind:class="['item'+index]">
+        <!-- 轮播图 -->
+        <div v-show="index === nowIndex" v-for="(item,index) in sliderImgList" :key="index" class="slider-item" v-bind:class="['item'+[index+1]]">
             <a href="">
-                <img v-bind:src=imgUrl alt="" style="width: 900px;height: 500px;">
+                <img v-bind:src=item.imgUrl alt="" style="width: 900px;height: 500px;">
             </a>
         </div>
+        <!-- 图片标题 -->
+        <h2 class="slider-title" v-show="index === nowIndex" v-for="(item,index) in sliderImgList">{{ item.title }}</h2>
+        <!-- 左右按钮 -->
+        <a v-on:click="preHandler" href="javascript:void(0)" class="btn pre-btn">&lt;</a>
+        <a v-on:click="nextHandler" href="javascript:void(0)" class="btn next-btn">&gt;</a>
+
         <!-- dots -->
         <ul class="slider-dots">
-            <li>&lt;</li>
-            <li>1</li>
-            <li>2</li>
-            <li>3</li>
-            <li>4</li>
-            <li>&gt;</li>
+            <li v-on:click="clickdots(index)" v-for="(item,index) in sliderImgList" :key="index">{{ index+1 }}</li>
         </ul>
     </div>
 </template>
@@ -22,18 +24,47 @@ export default {
     data() {
         return {
             nowIndex:0,
-            sliderImgList:[require('../assets/img1.jpg'),require('../assets/img2.jpg'),require('../assets/img3.jpg'),require('../assets/img4.jpg')]
+            sliderImgList:[
+                {
+                    imgUrl:require('../assets/img1.jpg'),
+                    title:'第一张'
+                },
+                {
+                    imgUrl:require('../assets/img2.jpg'),
+                    title:'第二张'
+                },
+                {
+                    imgUrl:require('../assets/img3.jpg'),
+                    title:'第三张'
+                },
+                {
+                    imgUrl:require('../assets/img4.jpg'),
+                    title:'第四张'
+                },
+                ]
         }
     },
     methods: {
+        preHandler(){
+            this.nowIndex--;
+            if(this.nowIndex <0 ){
+                this.nowIndex = 3
+            }
+        },
+        nextHandler(){
+            this.autoPlay()
+        },
+        clickdots(index){
+            this.nowIndex = index
+        },
         autoPlay(){
             this.nowIndex++;
-            if(this.nowIndex === 4){
+            if(this.nowIndex > 3){
                 this.nowIndex = 0
             }
         },
         runInv(){
-            this.invId = setInterval(this.autoPlay,1000)
+            this.invId = setInterval(this.autoPlay,2000)
         },
         clearInv(){
             clearInterval(this.invId)
@@ -87,7 +118,34 @@ export default {
         opacity: 0.6;
         margin: 0 10px;
     }
-    .slider-item img{
-        
-}
+    .btn{
+        width:50px;
+        height: 50px;
+        background:black;
+        color: white;
+        position:absolute;
+        z-index: 300;
+        font-size: 40px;
+        text-align: center;
+        line-height: 50px;
+        top:50%;
+        margin-top:-25px;
+        opacity: 0.2;
+    }
+    .pre-btn{
+        left:10px;
+    }
+    .next-btn{
+        right:10px;
+    }
+    .slider-title{
+        position: absolute;
+        z-index: 400;
+        background:black;
+        color: white;
+        bottom: 10px;
+        left:20px;
+        opacity: 0.6;
+    }
+
 </style>
